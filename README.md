@@ -1,6 +1,6 @@
 
 
-# Gotamatie
+# Gotamatie 🍅🐇
 
 Gotamatie is a command-line interface (CLI) application written in Go that implements the Pomodoro Technique, a time management method that alternates between focused work periods (called "pomodoros") and short breaks. This application allows you to customize the duration of pomodoros, short breaks, long breaks, and the number of pomodoro sessions.
 
