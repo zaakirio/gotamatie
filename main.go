@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/spf13/cobra"
 )
 
@@ -13,19 +14,39 @@ func main() {
 		Use:   "go-pomodoro-cli",
 		Short: "A CLI pomodoro timer",
 		Run: func(cmd *cobra.Command, args []string) {
-			pomodoroDuration, _ := cmd.Flags().GetString("d")
-			breakDuration, _ := cmd.Flags().GetString("b")
-			longBreakDuration, _ := cmd.Flags().GetString("l")
-			pomodoroSessions, _ := cmd.Flags().GetString("s")
+			pomodoroDuration, err := cmd.Flags().GetInt("d")
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			breakDuration, err := cmd.Flags().GetInt("b")
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			longBreakDuration, err := cmd.Flags().GetInt("l")
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			pomodoroSessions, err := cmd.Flags().GetInt("s")
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+
+			if !isValidInput(pomodoroDuration, breakDuration, longBreakDuration, pomodoroSessions) {
+				os.Exit(1)
+			}
 
 			initPomodoro(pomodoroDuration, breakDuration, longBreakDuration, pomodoroSessions)
 
 		},
 	}
-	rootCmd.Flags().String("d", "", "Pomodoro Duration")
-	rootCmd.Flags().String("b", "", "Break Duration")
-	rootCmd.Flags().String("l", "", "Long Break Duration")
-	rootCmd.Flags().String("s", "", "Number of Pomodoro Sessions")
+	rootCmd.Flags().IntP("d", "d", 0, "Pomodoro Duration")
+	rootCmd.Flags().IntP("b", "b", 0, "Break Duration")
+	rootCmd.Flags().IntP("l", "l", 0, "Long Break Duration")
+	rootCmd.Flags().IntP("s", "s", 0, "Number of Pomodoro Sessions")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -33,58 +54,56 @@ func main() {
 	}
 }
 
-func startPomodoro(duration time.Duration) {
-	fmt.Println("Pomodoro started!")
-	time.Sleep(duration)
-	fmt.Println("Pomodoro completed!")
+func startTimer(duration time.Duration, message string) {
+	fmt.Println(message)
+
+	s := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
+	s.Start()
+
+	timer := time.NewTimer(duration)
+	<-timer.C
+
+	s.Stop()
+
+	fmt.Println("Completed!\n----------------------")
 }
 
-func startBreak(duration time.Duration) {
-	fmt.Println("Break started!")
-	time.Sleep(duration)
-	fmt.Println("Break completed!")
-}
-
-func startLongBreak(duration time.Duration) {
-	fmt.Println("Long Break started!")
-	time.Sleep(duration)
-	fmt.Println("Long Break completed!")
-}
-
-func initPomodoro(pomodoroDuration int, breakDuration int, longBreakDuration int, pomodoroSessions int) {
-	isValidPomodoro := pomodoroDuration > 1 || pomodoroDuration <= 60
-	println(pomodoroDuration)
-	isValidBreak := breakDuration > 1 || breakDuration <= 60
-	isValidLongBreak := longBreakDuration > 1 || longBreakDuration <= 60
-	isValidPomodoroSessions := pomodoroSessions > 1 || pomodoroSessions <= 23
+func isValidInput(pomodoroDuration, breakDuration, longBreakDuration, pomodoroSessions int) bool {
+	isValidPomodoro := pomodoroDuration > 1 && pomodoroDuration <= 60
+	isValidBreak := breakDuration > 1 && breakDuration <= 60
+	isValidLongBreak := longBreakDuration > 1 && longBreakDuration <= 60
+	isValidPomodoroSessions := pomodoroSessions > 1 && pomodoroSessions <= 23
 
 	if !isValidPomodoro {
 		fmt.Println("Invalid pomodoro duration")
-		return
+		return false
 	}
 	if !isValidBreak {
 		fmt.Println("Invalid break duration")
-		return
+		return false
 	}
 	if !isValidLongBreak {
 		fmt.Println("Invalid long break duration")
-		return
+		return false
 	}
 	if !isValidPomodoroSessions {
 		fmt.Println("Invalid pomodoro sessions")
-		return
+		return false
 	}
 
+	return true
+}
+
+func initPomodoro(pomodoroDuration int, breakDuration int, longBreakDuration int, pomodoroSessions int) {
 	for pomodoroSessions > 0 {
 
 		pomodoroCount := 0
 
 		for pomodoroCount < 4 {
 			setPomodoro := time.Duration(pomodoroDuration) * time.Minute
-			println(setPomodoro)
 			setBreak := time.Duration(breakDuration) * time.Minute
-			startPomodoro(setPomodoro)
-			startBreak(setBreak)
+			startTimer(setPomodoro, "Pomodoro started!")
+			startTimer(setBreak, "Break started!")
 			pomodoroCount++
 		}
 
@@ -93,7 +112,6 @@ func initPomodoro(pomodoroDuration int, breakDuration int, longBreakDuration int
 		fmt.Println("Pomodoro Session completed!")
 
 		setLongBreak := time.Duration(longBreakDuration) * time.Minute
-		startLongBreak(setLongBreak)
+		startTimer(setLongBreak, "Long Break started!")
 	}
-
 }
