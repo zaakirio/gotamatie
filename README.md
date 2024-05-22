@@ -1,29 +1,29 @@
 
 
-# Gomodoro 
+# Gotamatie
 
-Gomodoro is a command-line interface (CLI) application written in Go that implements the Pomodoro Technique, a time management method that alternates between focused work periods (called "pomodoros") and short breaks. This application allows you to customize the duration of pomodoros, short breaks, long breaks, and the number of pomodoro sessions.
+Gotamatie is a command-line interface (CLI) application written in Go that implements the Pomodoro Technique, a time management method that alternates between focused work periods (called "pomodoros") and short breaks. This application allows you to customize the duration of pomodoros, short breaks, long breaks, and the number of pomodoro sessions.
 
 ## Installation
 
-To install Go Pomodoro CLI, you'll need to have Go installed on your system. You can download Go from the official website: https://golang.org/dl/
+To install Gotamatie, you'll need to have Go installed on your system. You can download Go from the official website: https://golang.org/dl/
 
 Once you have Go installed, you can clone the repository and build the application:
 
 ```bash
-git clone https://github.com/your-username/go-pomodoro-cli.git
+git clone https://github.com/zaakirio/gotamatie.git
 cd go-pomodoro-cli
 go build
 ```
 
-This will create an executable file `gomodoro` (or `gomodoro.exe` on Windows) in the same directory.
+This will create an executable file `Gotamatie` (or `Gotamatie.exe` on Windows) in the same directory.
 
 ## Usage
 
-To run Gomodoro, use the following command:
+To run Gotamatie, use the following command:
 
 ```bash
-./gomodoro --d <pomodoro-duration> --b <break-duration> --l <long-break-duration> --s <pomodoro-sessions>
+./gotamatie --d <pomodoro-duration> --b <break-duration> --l <long-break-duration> --s <pomodoro-sessions>
 ```
 
 Replace the placeholders with the desired values:
@@ -36,7 +36,7 @@ Replace the placeholders with the desired values:
 For example, to start a pomodoro session with 25-minute pomodoros, 5-minute short breaks, 15-minute long breaks, and 4 pomodoro sessions, you would run:
 
 ```bash
-./gomodoro --d 25 --b 5 --l 15 --s 4
+./gotamatie --d 25 --b 5 --l 15 --s 4
 ```
 
 The application will display a spinner animation and the remaining time for each pomodoro, short break, and long break.
