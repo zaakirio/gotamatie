@@ -12,7 +12,7 @@ Once you have Go installed, you can clone the repository and build the applicati
 
 ```bash
 git clone https://github.com/zaakirio/gotamatie.git
-cd go-pomodoro-cli
+cd gotamatie
 go build
 ```
 
