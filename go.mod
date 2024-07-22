@@ -1,4 +1,4 @@
-module github.com/zaakirio/go-pomodoro-cli
+module github.com/zaakirio/gotamatie
 
 go 1.22.2
 

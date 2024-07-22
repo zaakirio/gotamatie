@@ -11,7 +11,7 @@ import (
 
 func main() {
 	rootCmd := &cobra.Command{
-		Use:   "go-pomodoro-cli",
+		Use:   "gotamatie",
 		Short: "A CLI pomodoro timer",
 		Run: func(cmd *cobra.Command, args []string) {
 			pomodoroDuration, err := cmd.Flags().GetInt("d")
